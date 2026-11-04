@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connect TikTok</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+<nav><a href="/">Home</a><a href="/privacy.html">Privacy policy</a><a href="/terms.html">Terms of service</a></nav>
+<h1>Connect TikTok</h1>
+<div id="ok" hidden>
+  <p>TikTok sent back a one-time code. Copy it, then paste it into the <b>Connect TikTok</b> workflow within a few minutes. It expires quickly.</p>
+  <div class="card">
+    <code class="big" id="code"></code>
+    <button id="copy">Copy code</button>
+    <span id="copied" class="muted" hidden>Copied</span>
+  </div>
+  <p><a href="https://github.com/Gon-L/Viral/actions/workflows/tiktok-connect.yml">Open the Connect TikTok workflow</a>, click <b>Run workflow</b> and paste the code.</p>
+</div>
+<div id="err" hidden class="card">
+  <p><b>TikTok didn't return a code.</b> <span id="why"></span></p>
+  <p>Run the Connect TikTok workflow again to get a fresh login link.</p>
+</div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code");
+  if (code) {
+    document.getElementById("code").textContent = code;
+    document.getElementById("ok").hidden = false;
+    document.getElementById("copy").onclick = async () => {
+      try { await navigator.clipboard.writeText(code); document.getElementById("copied").hidden = false; } catch (e) {}
+    };
+  } else {
+    document.getElementById("why").textContent = q.get("error_description") || q.get("error") || "";
+    document.getElementById("err").hidden = false;
+  }
+</script>
+</main></body></html>
